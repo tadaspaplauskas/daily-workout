@@ -1,0 +1,155 @@
+<input type="checkbox" id="hasWeights"> Weights<br>
+<input type="checkbox" id="hasBars"> Bars<br>
+<input type="number" id="iterations" min="2" max="6" step="1" value="3"> Iterations<br>
+
+<button onclick="generateWorkout()">New workout</button>
+
+<div id="workout"></div>
+<div id="timer"></div>
+
+<button onclick="timer.start()">Start</button>
+<button onclick="timer.togglePause()">Pause/Resume</button>
+<button onclick="timer.reset()">Reset</button>
+
+<script>
+var exercises = {
+    bodyweight: {
+        lower: [
+            'Squats',
+            'Single leg squats',
+            'Lunges',
+            'Side lunges',
+            'Kicks',
+        ],
+        push: [
+            'Push ups',
+            'Hand stands',
+        ],
+        pull: [
+            'Superman/Swim???',
+            'Alternating hand raises???',
+        ],
+        core: [
+            'Scissors',
+            'Walkouts',
+            'Legraises',
+            'Plank',
+        ],
+    },
+    weighted: {
+        lower: [],
+        push: [
+            'Overhead press',
+            'Pushups with rows',
+        ],
+        pull: [
+            'Swings',
+            'Bent-over rows',
+        ],
+        core: [
+            'Orbits',
+            'Rotations',
+        ],
+    },
+    bars: {
+        lower: [],
+        push: [
+            'Bar pushups',
+            'Dips',
+            'L-dips',
+        ],
+        pull: [
+            'Lateral raises',
+            'Pullups',
+        ],
+        core: [
+            'Leg raises',
+            'Flag??',
+        ],
+    },
+}
+
+function random(items) {
+    return items[~~(items.length * Math.random())]
+}
+
+function iterations() {
+    return document.getElementById('iterations').value
+}
+
+function hasWeights() {
+    return document.getElementById('hasWeights').checked
+}
+
+function hasBars() {
+    return document.getElementById('hasBars').checked
+}
+
+function generateWorkout() {
+    return printList(selectExercises(iterations(), hasWeights(), hasBars()))
+}
+
+function selectExercises(iterations, hasWeights = false, hasBars = false) {
+    var canDo = exercises.bodyweight
+
+    if (hasWeights) {
+        canDo = {
+            lower: canDo.lower.concat(exercises.weighted.lower),
+            push: canDo.push.concat(exercises.weighted.push),
+            pull: canDo.pull.concat(exercises.weighted.pull),
+            core: canDo.core.concat(exercises.weighted.core),
+        }
+    }
+
+    if (hasBars) {
+        canDo = {
+            lower: canDo.lower.concat(exercises.bars.lower),
+            push: canDo.push.concat(exercises.bars.push),
+            pull: canDo.pull.concat(exercises.bars.pull),
+            core: canDo.core.concat(exercises.bars.core),
+        }
+    }
+
+    return [
+        random(canDo.lower),
+        random(canDo.push),
+        random(canDo.pull),
+        random(canDo.core),
+        '1 minute rest',
+        `Do that ${iterations} times for a total of ${iterations * 5} minutes`,
+    ]
+}
+
+function printList(lines) {
+    document.getElementById('workout').innerHTML = `<ul><li>${lines.join('</li><li>')}</li></ul>`
+}
+
+timer = {
+    interval: null,
+
+    isPaused: false,
+
+    start: function () {
+        this.interval = setInterval(() => {
+            if (this.isPaused)
+                return
+
+            let seconds = document.getElementById('timer').innerText
+
+            seconds = seconds > 0 ? seconds - 1 : 60
+
+            document.getElementById('timer').innerHTML = seconds
+        }, 1000)
+    },
+
+    togglePause: function () {
+        this.isPaused = !this.isPaused
+    },
+
+    reset: function () {
+        clearInterval(this.interval)
+    }
+}
+
+generateWorkout()
+</script>
