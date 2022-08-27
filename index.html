@@ -121,7 +121,7 @@ function selectExercises(iterations, hasWeights = false, hasBars = false) {
 }
 
 function printList(lines) {
-    document.getElementById('workout').innerHTML = `<ul><li>${lines.join('</li><li>')}</li></ul>`
+    document.getElementById('workout').innerHTML = `<ul id="list"><li>${lines.join('</li><li>')}</li></ul>`
 }
 
 timer = {
@@ -129,17 +129,14 @@ timer = {
 
     isPaused: false,
 
+    seconds: 0,
+
     start: function () {
-        this.interval = setInterval(() => {
-            if (this.isPaused)
-                return
+        this.reset()
 
-            let seconds = document.getElementById('timer').innerText
+        document.getElementById('timer').innerText = 'Get ready!'
 
-            seconds = seconds > 0 ? seconds - 1 : 60
-
-            document.getElementById('timer').innerHTML = seconds
-        }, 1000)
+        this.interval = setInterval(() => this.everySecond(), 1000)
     },
 
     togglePause: function () {
@@ -148,6 +145,19 @@ timer = {
 
     reset: function () {
         clearInterval(this.interval)
+    },
+
+    everySecond: function () {
+        if (this.isPaused) {
+            return
+        }
+
+        let exercise = Math.floor(this.seconds / 60)
+
+        document.getElementById('timer').innerHTML = 60 - this.seconds % 60
+        document.getElementById('list').childNodes[exercise].style.fontWeight = 'bold'
+
+        this.seconds++
     }
 }
 
