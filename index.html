@@ -130,6 +130,9 @@ timer = {
 
     seconds: 0,
 
+    secondsForExercise: 60,
+    exercisesInIteration: 5,
+
     start: function () {
         this.reset()
 
@@ -154,9 +157,9 @@ timer = {
             return
         }
 
-        const secondsLeft = 3 - this.seconds % 3
-        const exercise = Math.floor(this.seconds / 3) % 5
-        const iteration = Math.floor(this.seconds / (3 * 5))
+        const secondsLeft = this.secondsForExercise - this.seconds % this.secondsForExercise
+        const exercise = Math.floor(this.seconds / this.secondsForExercise) % this.exercisesInIteration
+        const iteration = Math.floor(this.seconds / (this.secondsForExercise * this.exercisesInIteration))
 
         const items = document.getElementById('list').childNodes
         const timer = document.getElementById('timer')
