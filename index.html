@@ -115,7 +115,7 @@ function selectExercises(iterations, hasWeights = false, hasBars = false) {
         random(canDo.pull),
         random(canDo.core),
         '1 minute rest',
-        `Do that ${iterations} times for a total of ${iterations * 5} minutes`,
+        `Repeat ${iterations - 1} more times for a total of ${iterations * 5} minutes`,
     ]
 }
 
@@ -144,6 +144,9 @@ timer = {
 
     reset: function () {
         clearInterval(this.interval)
+        this.seconds = 0
+
+        document.getElementById('list').childNodes.forEach(item => item.style.fontWeight = 'normal')
     },
 
     everySecond: function () {
@@ -151,12 +154,31 @@ timer = {
             return
         }
 
-        let exercise = Math.floor(this.seconds / 60)
+        const secondsLeft = 3 - this.seconds % 3
+        const exercise = Math.floor(this.seconds / 3) % 5
+        const iteration = Math.floor(this.seconds / (3 * 5))
 
-        document.getElementById('timer').innerHTML = 60 - this.seconds % 60
-        document.getElementById('list').childNodes[exercise].style.fontWeight = 'bold'
+        const items = document.getElementById('list').childNodes
+        const timer = document.getElementById('timer')
+
+        if (iteration == iterations()) {
+            timer.innerHTML = 'Done!'
+            return this.reset()
+        }
+
+        timer.innerHTML = secondsLeft
+        this.beep()
+
+        items.forEach(item => item.style.fontWeight = 'normal')
+        items[exercise].style.fontWeight = 'bold'
 
         this.seconds++
+    },
+
+    beep: function () {
+        // var beepsound = new Audio(
+        // 'https://www.soundjay.com/button/sounds/beep-01a.mp3');
+        // beepsound.play();
     }
 }
 
