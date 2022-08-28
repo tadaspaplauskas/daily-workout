@@ -181,7 +181,7 @@ timer = {
         this.seconds++
     },
 
-    beep: function () {
+    beep: function (length = 200) {
         const AudioContext = window.AudioContext || window.webkitAudioContext
 
         const audioCtx = new AudioContext()
@@ -194,7 +194,7 @@ timer = {
 
         oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime)
 
-        setTimeout(() => oscillator.stop(), 100)
+        setTimeout(() => oscillator.stop(), length)
     }
 }
 
