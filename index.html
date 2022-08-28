@@ -167,7 +167,10 @@ timer = {
         }
 
         timer.innerHTML = secondsLeft
-        this.beep()
+
+        if (secondsLeft <= 5) {
+            this.beep()
+        }
 
         items.forEach(item => item.style.fontWeight = 'normal')
         items[exercise].style.fontWeight = 'bold'
@@ -176,9 +179,19 @@ timer = {
     },
 
     beep: function () {
-        // var beepsound = new Audio(
-        // 'https://www.soundjay.com/button/sounds/beep-01a.mp3');
-        // beepsound.play();
+        const AudioContext = window.AudioContext || window.webkitAudioContext
+
+        const audioCtx = new AudioContext()
+        const frequency = 880
+        const oscillator = audioCtx.createOscillator()
+
+        oscillator.connect(audioCtx.destination)
+        oscillator.type = 'sine'
+        oscillator.start()
+
+        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime)
+
+        setTimeout(() => oscillator.stop(), 100)
     }
 }
 
