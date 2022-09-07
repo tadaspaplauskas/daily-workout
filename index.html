@@ -1,202 +1,265 @@
-<input type="checkbox" id="hasWeights"> Weights<br>
-<input type="checkbox" id="hasBars"> Bars<br>
-<input type="number" id="iterations" min="2" max="6" step="1" value="3"> Iterations<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/awsm.css/dist/awsm.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"> -->
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    <title>Quick workout generator</title>
+</head>
+<body>
+    <header>
+        <h1>Minimalist workout generator</h1>
+        <p>Have 5 minutes and no ideas? This can help.</p>
+    </header>
 
-<button onclick="generateWorkout()">New workout</button>
+    <main>
+        <section>
+            <!-- <header>
+                <h2>Choose parameters</h2>
+                <p>Choose equipment and time limit</p>
+            </header> -->
+            <form>
+                <label>Equipment</label>
+                <input type="checkbox" id="hasWeights">
+                <label for="hasWeights">Weights</label>
 
-<div id="workout"></div>
-<div id="timer"></div>
+                <input type="checkbox" id="hasBars">
+                <label for="hasBars">Bars</label>
 
-<button onclick="timer.start()">Start</button>
-<button onclick="timer.togglePause()">Pause/Resume</button>
+                <label>Time</label>
+                <input type="range" id="minutes" min="5" max="30" step="5" value="15" onchange="workout.print()">
 
-<script>
-var exercises = {
-    bodyweight: {
-        lower: [
-            'Squats',
-            'Single leg squats',
-            'Lunges',
-            'Side lunges',
-            'Kicks',
-        ],
-        push: [
-            'Push ups',
-            'Hand stands',
-        ],
-        pull: [
-            'Superman/Swim???',
-            'Alternating hand raises???',
-        ],
-        core: [
-            'Scissors',
-            'Walkouts',
-            'Legraises',
-            'Plank',
-        ],
-    },
-    weighted: {
-        lower: [],
-        push: [
-            'Overhead press',
-            'Pushups with rows',
-        ],
-        pull: [
-            'Swings',
-            'Bent-over rows',
-        ],
-        core: [
-            'Orbits',
-            'Rotations',
-        ],
-    },
-    bars: {
-        lower: [],
-        push: [
-            'Bar pushups',
-            'Dips',
-            'L-dips',
-        ],
-        pull: [
-            'Lateral raises',
-            'Pullups',
-        ],
-        core: [
-            'Leg raises',
-            'Flag??',
-        ],
-    },
-}
+                <input type="button" onclick="workout.regenerate()" value="New workout">
 
-function random(items) {
-    return items[~~(items.length * Math.random())]
-}
+                <div id="workout"></div>
+                <div id="timer"></div>
 
-function iterations() {
-    return document.getElementById('iterations').value
-}
+                <!-- <button onclick="timer.start()">▶️</button> -->
+                <!-- <button onclick="timer.togglePause()">⏸</button> -->
+            </form>
+        </section>
+    </main>
 
-function hasWeights() {
-    return document.getElementById('hasWeights').checked
-}
+    <footer>
+        <hr>
+        <p>
+            Made by <a href="https://tadas.blog" target="_blank">Tadas Paplauskas ↗</a>
+        </p>
+    </footer>
 
-function hasBars() {
-    return document.getElementById('hasBars').checked
-}
+    <script>
+    function randomizeArray(items) {
+        for (i = items.length -1; i > 0; i--) {
+            j = Math.floor(Math.random() * i)
+            k = items[i]
+            items[i] = items[j]
+            items[j] = k
+        }
 
-function generateWorkout() {
-    return printList(selectExercises(iterations(), hasWeights(), hasBars()))
-}
+        return items
+    }
 
-function selectExercises(iterations, hasWeights = false, hasBars = false) {
-    var canDo = exercises.bodyweight
+    const workout = {
+        exercises: {
+            bodyweight: {
+                lower: [
+                    'Squats',
+                    'Single leg squats',
+                    'Lunges',
+                    'Side lunges',
+                    'Kicks',
+                ],
+                push: [
+                    'Push ups',
+                    'Hand stands',
+                ],
+                pull: [
+                    'Superman/Swim???',
+                    'Alternating hand raises???',
+                ],
+                core: [
+                    'Scissors',
+                    'Walkouts',
+                    'Legraises',
+                    'Plank',
+                ],
+            },
+            weighted: {
+                lower: [],
+                push: [
+                    'Overhead press',
+                    'Pushups with rows',
+                ],
+                pull: [
+                    'Swings',
+                    'Bent-over rows',
+                ],
+                core: [
+                    'Orbits',
+                    'Rotations',
+                ],
+            },
+            bars: {
+                lower: [],
+                push: [
+                    'Bar pushups',
+                    'Dips',
+                    'L-dips',
+                ],
+                pull: [
+                    'Lateral raises',
+                    'Pullups',
+                ],
+                core: [
+                    'Leg raises',
+                    'Flag??',
+                ],
+            },
+        },
 
-    if (hasWeights) {
-        canDo = {
-            lower: canDo.lower.concat(exercises.weighted.lower),
-            push: canDo.push.concat(exercises.weighted.push),
-            pull: canDo.pull.concat(exercises.weighted.pull),
-            core: canDo.core.concat(exercises.weighted.core),
+        minutes: function() {
+            return document.getElementById('minutes').value
+        },
+
+        hasWeights: function() {
+            return document.getElementById('hasWeights').checked
+        },
+
+        hasBars: function() {
+            return document.getElementById('hasBars').checked
+        },
+
+        regenerate: function() {
+            this.randomize()
+            this.print()
+        },
+
+        randomize: function () {
+            ['bodyweight', 'weighted', 'bars'].forEach((equipment) => {
+                ['lower', 'push', 'pull', 'core'].forEach((group) => {
+                    this.exercises[equipment][group] = randomizeArray(this.exercises[equipment][group])
+                })
+            })
+        },
+
+        selectExercises: function(minutes, hasWeights = false, hasBars = false) {
+            var canDo = this.exercises.bodyweight
+
+            if (hasWeights) {
+                canDo = {
+                    lower: canDo.lower.concat(this.exercises.weighted.lower),
+                    push: canDo.push.concat(this.exercises.weighted.push),
+                    pull: canDo.pull.concat(this.exercises.weighted.pull),
+                    core: canDo.core.concat(this.exercises.weighted.core),
+                }
+            }
+
+            if (hasBars) {
+                canDo = {
+                    lower: canDo.lower.concat(this.exercises.bars.lower),
+                    push: canDo.push.concat(this.exercises.bars.push),
+                    pull: canDo.pull.concat(this.exercises.bars.pull),
+                    core: canDo.core.concat(this.exercises.bars.core),
+                }
+            }
+
+            return [
+                canDo.lower[0],
+                canDo.push[0],
+                canDo.pull[0],
+                canDo.core[0],
+                '1 minute rest',
+                minutes > 5 ? `Repeat ${minutes / 5 - 1} more times` : `Done!`,
+                minutes > 5 ?  `For a total of ${minutes} minutes` : null,
+            ].filter(x => x)
+        },
+
+        print: function() {
+            const lines = this.selectExercises(this.minutes(), this.hasWeights(), this.hasBars())
+            document.getElementById('workout').innerHTML = `<ul id="list"><li>${lines.join('</li><li>')}</li></ul>`
+        },
+    }
+
+    const timer = {
+        interval: null,
+
+        isPaused: false,
+
+        seconds: 0,
+
+        secondsForExercise: 60,
+        exercisesInIteration: 5,
+
+        start: function () {
+            this.reset()
+
+            document.getElementById('timer').innerText = 'Get ready!'
+
+            this.interval = setInterval(() => this.everySecond(), 1000)
+        },
+
+        togglePause: function () {
+            this.isPaused = !this.isPaused
+        },
+
+        reset: function () {
+            clearInterval(this.interval)
+            this.seconds = 0
+            this.isPaused = false
+
+            document.getElementById('list').childNodes.forEach(item => item.style.fontWeight = 'normal')
+        },
+
+        everySecond: function () {
+            if (this.isPaused) {
+                return
+            }
+
+            const secondsLeft = this.secondsForExercise - this.seconds % this.secondsForExercise
+            const exercise = Math.floor(this.seconds / this.secondsForExercise) % this.exercisesInIteration
+            const iteration = Math.floor(this.seconds / (this.secondsForExercise * this.exercisesInIteration))
+
+            const items = document.getElementById('list').childNodes
+            const timer = document.getElementById('timer')
+
+            if (iteration == minutes()) {
+                timer.innerHTML = 'Done!'
+                return this.reset()
+            }
+
+            timer.innerHTML = secondsLeft
+
+            if (secondsLeft <= 5) {
+                this.beep()
+            }
+
+            items.forEach(item => item.style.fontWeight = 'normal')
+            items[exercise].style.fontWeight = 'bold'
+
+            this.seconds++
+        },
+
+        beep: function (length = 200) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext
+
+            const audioCtx = new AudioContext()
+            const frequency = 880
+            const oscillator = audioCtx.createOscillator()
+
+            oscillator.connect(audioCtx.destination)
+            oscillator.type = 'sine'
+            oscillator.start()
+
+            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime)
+
+            setTimeout(() => oscillator.stop(), length)
         }
     }
 
-    if (hasBars) {
-        canDo = {
-            lower: canDo.lower.concat(exercises.bars.lower),
-            push: canDo.push.concat(exercises.bars.push),
-            pull: canDo.pull.concat(exercises.bars.pull),
-            core: canDo.core.concat(exercises.bars.core),
-        }
-    }
-
-    return [
-        random(canDo.lower),
-        random(canDo.push),
-        random(canDo.pull),
-        random(canDo.core),
-        '1 minute rest',
-        `Repeat ${iterations - 1} more times for a total of ${iterations * 5} minutes`,
-    ]
-}
-
-function printList(lines) {
-    document.getElementById('workout').innerHTML = `<ul id="list"><li>${lines.join('</li><li>')}</li></ul>`
-}
-
-timer = {
-    interval: null,
-
-    isPaused: false,
-
-    seconds: 0,
-
-    secondsForExercise: 60,
-    exercisesInIteration: 5,
-
-    start: function () {
-        this.reset()
-
-        document.getElementById('timer').innerText = 'Get ready!'
-
-        this.interval = setInterval(() => this.everySecond(), 1000)
-    },
-
-    togglePause: function () {
-        this.isPaused = !this.isPaused
-    },
-
-    reset: function () {
-        clearInterval(this.interval)
-        this.seconds = 0
-
-        document.getElementById('list').childNodes.forEach(item => item.style.fontWeight = 'normal')
-    },
-
-    everySecond: function () {
-        if (this.isPaused) {
-            return
-        }
-
-        const secondsLeft = this.secondsForExercise - this.seconds % this.secondsForExercise
-        const exercise = Math.floor(this.seconds / this.secondsForExercise) % this.exercisesInIteration
-        const iteration = Math.floor(this.seconds / (this.secondsForExercise * this.exercisesInIteration))
-
-        const items = document.getElementById('list').childNodes
-        const timer = document.getElementById('timer')
-
-        if (iteration == iterations()) {
-            timer.innerHTML = 'Done!'
-            return this.reset()
-        }
-
-        timer.innerHTML = secondsLeft
-
-        if (secondsLeft <= 5) {
-            this.beep()
-        }
-
-        items.forEach(item => item.style.fontWeight = 'normal')
-        items[exercise].style.fontWeight = 'bold'
-
-        this.seconds++
-    },
-
-    beep: function (length = 200) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext
-
-        const audioCtx = new AudioContext()
-        const frequency = 880
-        const oscillator = audioCtx.createOscillator()
-
-        oscillator.connect(audioCtx.destination)
-        oscillator.type = 'sine'
-        oscillator.start()
-
-        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime)
-
-        setTimeout(() => oscillator.stop(), length)
-    }
-}
-
-generateWorkout()
-</script>
+    workout.regenerate()
+    </script>
+</body>
+</html>
