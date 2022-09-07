@@ -23,14 +23,14 @@
             </header> -->
             <form>
                 <label>Equipment</label>
-                <input type="checkbox" id="hasWeights">
+                <input type="checkbox" id="hasWeights" oninput="workout.print()">
                 <label for="hasWeights">Weights</label>
 
-                <input type="checkbox" id="hasBars">
+                <input type="checkbox" id="hasBars" oninput="workout.print()">
                 <label for="hasBars">Bars</label>
 
                 <label>Time</label>
-                <input type="range" id="minutes" min="5" max="30" step="5" value="15" onchange="workout.print()">
+                <input type="range" id="minutes" min="5" max="30" step="5" value="15" oninput="workout.print()">
 
                 <input type="button" onclick="workout.regenerate()" value="New workout">
 
@@ -60,6 +60,10 @@
         }
 
         return items
+    }
+
+    function last(items) {
+        return items[items.length - 1]
     }
 
     const workout = {
@@ -167,10 +171,10 @@
             }
 
             return [
-                canDo.lower[0],
-                canDo.push[0],
-                canDo.pull[0],
-                canDo.core[0],
+                last(canDo.lower),
+                last(canDo.push),
+                last(canDo.pull),
+                last(canDo.core),
                 '1 minute rest',
                 minutes > 5 ? `Repeat ${minutes / 5 - 1} more times` : `Done!`,
                 minutes > 5 ?  `For a total of ${minutes} minutes` : null,
