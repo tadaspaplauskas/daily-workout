@@ -11,11 +11,11 @@
             padding-bottom: 0;
         }
     </style>
-    <title>Quick workout generator</title>
+    <title>Daily workout generator</title>
 </head>
 <body>
     <header>
-        <h1>🤸 Quick workout generator 🤸</h1>
+        <h1>🤸 Daily Workout Generator 🤸</h1>
         <p>Have only 5 minutes and 0 ideas? This can help.</p>
     </header>
 
@@ -81,7 +81,7 @@
                 ],
                 push: [
                     'Pushups',
-                    'Hindu Pushups
+                    'Hindu Pushups',
                     'Handstands',
                 ],
                 pull: [
@@ -187,7 +187,13 @@
 
         print: function() {
             const lines = this.selectExercises(this.minutes(), this.hasWeights(), this.hasBars())
-            document.getElementById('workout').innerHTML = `<ul id="list"><li>${lines.join('</li><li>')}</li></ul>`
+            document.getElementById('workout').innerHTML = `
+            <small>Do as many repetitions as you can.</small>
+            <ul id="list">
+                <li>
+                    ${lines.join('</li><li>')}
+                </li>
+            </ul>`
         },
     }
 
