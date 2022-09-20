@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css"> -->
 <link rel="stylesheet" href="https://unpkg.com/mvp.css">
 <style>
     /* both main and header tags have generous padding, it's too much */
@@ -19,10 +18,6 @@
 
 <main>
     <section>
-        <!-- <header>
-            <h2>Choose parameters</h2>
-            <p>Choose equipment and time limit</p>
-        </header> -->
         <form>
             <label>Equipment</label>
             <input type="checkbox" id="hasWeights" oninput="workout.print()">
@@ -38,9 +33,6 @@
 
             <div id="workout"></div>
             <div id="timer"></div>
-
-            <!-- <button onclick="timer.start()">▶️</button> -->
-            <!-- <button onclick="timer.togglePause()">⏸</button> -->
         </form>
     </section>
 </main>
