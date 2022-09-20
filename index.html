@@ -7,8 +7,9 @@
     <link rel="stylesheet" href="https://unpkg.com/mvp.css">
     <style>
         /* both main and header tags have generous padding, it's too much */
-        header, main {
-            padding-bottom: 0;
+        header, main, footer {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
     </style>
     <title>Daily workout generator</title>
@@ -92,7 +93,7 @@
                 core: [
                     'Scissors',
                     'Walkouts',
-                    'Legraises',
+                    'Leg raises',
                     'Plank',
                 ],
             },
@@ -189,7 +190,7 @@
             const lines = this.selectExercises(this.minutes(), this.hasWeights(), this.hasBars())
 
             for (let i = 0; i < 4; i++)
-                lines[i] = `<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(lines[i])}" target="_blank">${lines[i]}</a>`
+                lines[i] = `<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(lines[i] + ' exercise')}" target="_blank">${lines[i]}</a>`
 
             document.getElementById('workout').innerHTML = `
             <small>Do as many repetitions as you can.</small>
