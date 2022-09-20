@@ -126,10 +126,10 @@
             this.print()
         },
 
-        selectExercises: function(hasWeights = false, hasBars = false) {
-            var canDo = this.exercises.bodyweight
+        selectExercises: function() {
+            let canDo = this.exercises.bodyweight
 
-            if (hasWeights) {
+            if (this.hasWeights()) {
                 canDo = {
                     lower: canDo.lower.concat(this.exercises.weighted.lower),
                     push: canDo.push.concat(this.exercises.weighted.push),
@@ -138,7 +138,7 @@
                 }
             }
 
-            if (hasBars) {
+            if (this.hasBars()) {
                 canDo = {
                     lower: canDo.lower.concat(this.exercises.bars.lower),
                     push: canDo.push.concat(this.exercises.bars.push),
