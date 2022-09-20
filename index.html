@@ -1,284 +1,280 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css"> -->
-    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
-    <style>
-        /* both main and header tags have generous padding, it's too much */
-        header, main, footer {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-    </style>
-    <title>Daily workout generator</title>
-</head>
-<body>
-    <header>
-        <h1>🤸 Daily Workout Generator 🤸</h1>
-        <p>Have little time and no inspiration? This can help.</p>
-    </header>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css"> -->
+<link rel="stylesheet" href="https://unpkg.com/mvp.css">
+<style>
+    /* both main and header tags have generous padding, it's too much */
+    header, main, footer {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+</style>
+<title>Daily workout generator</title>
 
-    <main>
-        <section>
-            <!-- <header>
-                <h2>Choose parameters</h2>
-                <p>Choose equipment and time limit</p>
-            </header> -->
-            <form>
-                <label>Equipment</label>
-                <input type="checkbox" id="hasWeights" oninput="workout.print()">
-                <label for="hasWeights">Weights</label>
+<header>
+    <h1>🤸 Daily Workout Generator 🤸</h1>
+    <p>Have little time and no inspiration? This can help.</p>
+</header>
 
-                <input type="checkbox" id="hasBars" oninput="workout.print()">
-                <label for="hasBars">Bars</label>
+<main>
+    <section>
+        <!-- <header>
+            <h2>Choose parameters</h2>
+            <p>Choose equipment and time limit</p>
+        </header> -->
+        <form>
+            <label>Equipment</label>
+            <input type="checkbox" id="hasWeights" oninput="workout.print()">
+            <label for="hasWeights">Weights</label>
 
-                <label>Time</label>
-                <input type="range" id="minutes" min="5" max="30" step="5" value="5" oninput="workout.print()">
+            <input type="checkbox" id="hasBars" oninput="workout.print()">
+            <label for="hasBars">Bars</label>
 
-                <input type="button" onclick="workout.regenerate()" value="New workout">
+            <label>Time</label>
+            <input type="range" id="minutes" min="5" max="30" step="5" value="5" oninput="workout.print()">
 
-                <div id="workout"></div>
-                <div id="timer"></div>
+            <input type="button" onclick="workout.regenerate()" value="New workout">
 
-                <!-- <button onclick="timer.start()">▶️</button> -->
-                <!-- <button onclick="timer.togglePause()">⏸</button> -->
-            </form>
-        </section>
-    </main>
+            <div id="workout"></div>
+            <div id="timer"></div>
 
-    <footer>
-        <center>
-            Made by <a href="https://tadas.blog" target="_blank">Tadas Paplauskas ↗</a>
-        </center>
-    </footer>
+            <!-- <button onclick="timer.start()">▶️</button> -->
+            <!-- <button onclick="timer.togglePause()">⏸</button> -->
+        </form>
+    </section>
+</main>
 
-    <script>
-    function randomizeArray(items) {
-        for (i = items.length; i > 0; i--) {
-            j = Math.floor(Math.random() * i)
-            k = items[i]
-            items[i] = items[j]
-            items[j] = k
-        }
+<footer>
+    <center>
+        Made by <a href="https://tadas.blog" target="_blank">Tadas Paplauskas ↗</a>
+    </center>
+</footer>
 
-        return items
+<script>
+function randomizeArray(items) {
+    for (i = items.length; i > 0; i--) {
+        j = Math.floor(Math.random() * i)
+        k = items[i]
+        items[i] = items[j]
+        items[j] = k
     }
 
-    function last(items) {
-        return items[items.length - 1]
-    }
+    return items
+}
 
-    const workout = {
-        exercises: {
-            bodyweight: {
-                lower: [
-                    'Squats',
-                    'Single Leg Squats',
-                    'Lunges',
-                    'Side Lunges',
-                    'Front Kicks',
-                ],
-                push: [
-                    'Pushups',
-                    'Hindu Pushups',
-                    'Handstands',
-                ],
-                pull: [
-                    'Superman',
-                    'Swimmer',
-                    'Alternate Hand Raises',
-                ],
-                core: [
-                    'Scissors',
-                    'Walkouts',
-                    'Leg raises',
-                    'Plank',
-                ],
-            },
-            weighted: {
-                lower: [],
-                push: [
-                    'Overhead Press',
-                    'Pushups with rows',
-                ],
-                pull: [
-                    'Swings',
-                    'Bent-over Rows',
-                ],
-                core: [
-                    'Orbits',
-                    'Rotations',
-                ],
-            },
-            bars: {
-                lower: [],
-                push: [
-                    'Bar Pushups',
-                    'Dips',
-                    'L-dips',
-                ],
-                pull: [
-                    'Lateral Raises',
-                    'Pullups',
-                ],
-                core: [
-                    'Leg Raises',
-                ],
-            },
+function last(items) {
+    return items[items.length - 1]
+}
+
+const workout = {
+    exercises: {
+        bodyweight: {
+            lower: [
+                'Squats',
+                'Single Leg Squats',
+                'Lunges',
+                'Side Lunges',
+                'Front Kicks',
+            ],
+            push: [
+                'Pushups',
+                'Hindu Pushups',
+                'Handstands',
+            ],
+            pull: [
+                'Superman',
+                'Swimmer',
+                'Alternate Hand Raises',
+            ],
+            core: [
+                'Scissors',
+                'Walkouts',
+                'Leg raises',
+                'Plank',
+            ],
         },
-
-        minutes: function() {
-            return document.getElementById('minutes').value
+        weighted: {
+            lower: [],
+            push: [
+                'Overhead Press',
+                'Pushups with rows',
+            ],
+            pull: [
+                'Swings',
+                'Bent-over Rows',
+            ],
+            core: [
+                'Orbits',
+                'Rotations',
+            ],
         },
-
-        hasWeights: function() {
-            return document.getElementById('hasWeights').checked
+        bars: {
+            lower: [],
+            push: [
+                'Bar Pushups',
+                'Dips',
+                'L-dips',
+            ],
+            pull: [
+                'Lateral Raises',
+                'Pullups',
+            ],
+            core: [
+                'Leg Raises',
+            ],
         },
+    },
 
-        hasBars: function() {
-            return document.getElementById('hasBars').checked
-        },
+    minutes: function() {
+        return document.getElementById('minutes').value
+    },
 
-        regenerate: function() {
-            this.randomize()
-            this.print()
-        },
+    hasWeights: function() {
+        return document.getElementById('hasWeights').checked
+    },
 
-        randomize: function () {
-            ['bodyweight', 'weighted', 'bars'].forEach((equipment) => {
-                ['lower', 'push', 'pull', 'core'].forEach((group) => {
-                    this.exercises[equipment][group] = randomizeArray(this.exercises[equipment][group])
-                })
+    hasBars: function() {
+        return document.getElementById('hasBars').checked
+    },
+
+    regenerate: function() {
+        this.randomize()
+        this.print()
+    },
+
+    randomize: function () {
+        ['bodyweight', 'weighted', 'bars'].forEach((equipment) => {
+            ['lower', 'push', 'pull', 'core'].forEach((group) => {
+                this.exercises[equipment][group] = randomizeArray(this.exercises[equipment][group])
             })
-        },
+        })
+    },
 
-        selectExercises: function(minutes, hasWeights = false, hasBars = false) {
-            var canDo = this.exercises.bodyweight
+    selectExercises: function(minutes, hasWeights = false, hasBars = false) {
+        var canDo = this.exercises.bodyweight
 
-            if (hasWeights) {
-                canDo = {
-                    lower: canDo.lower.concat(this.exercises.weighted.lower),
-                    push: canDo.push.concat(this.exercises.weighted.push),
-                    pull: canDo.pull.concat(this.exercises.weighted.pull),
-                    core: canDo.core.concat(this.exercises.weighted.core),
-                }
+        if (hasWeights) {
+            canDo = {
+                lower: canDo.lower.concat(this.exercises.weighted.lower),
+                push: canDo.push.concat(this.exercises.weighted.push),
+                pull: canDo.pull.concat(this.exercises.weighted.pull),
+                core: canDo.core.concat(this.exercises.weighted.core),
             }
-
-            if (hasBars) {
-                canDo = {
-                    lower: canDo.lower.concat(this.exercises.bars.lower),
-                    push: canDo.push.concat(this.exercises.bars.push),
-                    pull: canDo.pull.concat(this.exercises.bars.pull),
-                    core: canDo.core.concat(this.exercises.bars.core),
-                }
-            }
-
-            return [
-                last(canDo.lower),
-                last(canDo.push),
-                last(canDo.pull),
-                last(canDo.core),
-                '1 minute rest',
-                minutes > 5 ? `Repeat ${minutes / 5 - 1} more times` : `Done!`,
-                minutes > 5 ?  `For a total of ${minutes} minutes` : null,
-            ].filter(x => x)
-        },
-
-        print: function() {
-            const lines = this.selectExercises(this.minutes(), this.hasWeights(), this.hasBars())
-
-            for (let i = 0; i < 4; i++)
-                lines[i] = `<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(lines[i] + ' exercise')}" target="_blank">${lines[i]}</a>`
-
-            document.getElementById('workout').innerHTML = `
-            <small>Do as many repetitions as you can.</small>
-            <ul id="list">
-                <li>
-                    ${lines.join('</li><li>')}
-                </li>
-            </ul>`
-        },
-    }
-
-    const timer = {
-        interval: null,
-
-        isPaused: false,
-
-        seconds: 0,
-
-        secondsForExercise: 60,
-        exercisesInIteration: 5,
-
-        start: function () {
-            this.reset()
-
-            document.getElementById('timer').innerText = 'Get ready!'
-
-            this.interval = setInterval(() => this.everySecond(), 1000)
-        },
-
-        togglePause: function () {
-            this.isPaused = !this.isPaused
-        },
-
-        reset: function () {
-            clearInterval(this.interval)
-            this.seconds = 0
-            this.isPaused = false
-
-            document.getElementById('list').childNodes.forEach(item => item.style.fontWeight = 'normal')
-        },
-
-        everySecond: function () {
-            if (this.isPaused) {
-                return
-            }
-
-            const secondsLeft = this.secondsForExercise - this.seconds % this.secondsForExercise
-            const exercise = Math.floor(this.seconds / this.secondsForExercise) % this.exercisesInIteration
-            const iteration = Math.floor(this.seconds / (this.secondsForExercise * this.exercisesInIteration))
-
-            const items = document.getElementById('list').childNodes
-            const timer = document.getElementById('timer')
-
-            if (iteration == minutes()) {
-                timer.innerHTML = 'Done!'
-                return this.reset()
-            }
-
-            timer.innerHTML = secondsLeft
-
-            if (secondsLeft <= 5) {
-                this.beep()
-            }
-
-            items.forEach(item => item.style.fontWeight = 'normal')
-            items[exercise].style.fontWeight = 'bold'
-
-            this.seconds++
-        },
-
-        beep: function (length = 200) {
-            const AudioContext = window.AudioContext || window.webkitAudioContext
-
-            const audioCtx = new AudioContext()
-            const frequency = 880
-            const oscillator = audioCtx.createOscillator()
-
-            oscillator.connect(audioCtx.destination)
-            oscillator.type = 'sine'
-            oscillator.start()
-
-            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime)
-
-            setTimeout(() => oscillator.stop(), length)
         }
-    }
 
-    workout.regenerate()
-    </script>
-</body>
-</html>
+        if (hasBars) {
+            canDo = {
+                lower: canDo.lower.concat(this.exercises.bars.lower),
+                push: canDo.push.concat(this.exercises.bars.push),
+                pull: canDo.pull.concat(this.exercises.bars.pull),
+                core: canDo.core.concat(this.exercises.bars.core),
+            }
+        }
+
+        return [
+            last(canDo.lower),
+            last(canDo.push),
+            last(canDo.pull),
+            last(canDo.core),
+            '1 minute rest',
+            minutes > 5 ? `Repeat ${minutes / 5 - 1} more times` : `Done!`,
+            minutes > 5 ?  `For a total of ${minutes} minutes` : null,
+        ].filter(x => x)
+    },
+
+    print: function() {
+        const lines = this.selectExercises(this.minutes(), this.hasWeights(), this.hasBars())
+
+        for (let i = 0; i < 4; i++)
+            lines[i] = `<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(lines[i] + ' exercise')}" target="_blank">${lines[i]}</a>`
+
+        document.getElementById('workout').innerHTML = `
+        <small>Do as many repetitions as you can.</small>
+        <ul id="list">
+            <li>
+                ${lines.join('</li><li>')}
+            </li>
+        </ul>`
+    },
+}
+
+const timer = {
+    interval: null,
+
+    isPaused: false,
+
+    seconds: 0,
+
+    secondsForExercise: 60,
+    exercisesInIteration: 5,
+
+    start: function () {
+        this.reset()
+
+        document.getElementById('timer').innerText = 'Get ready!'
+
+        this.interval = setInterval(() => this.everySecond(), 1000)
+    },
+
+    togglePause: function () {
+        this.isPaused = !this.isPaused
+    },
+
+    reset: function () {
+        clearInterval(this.interval)
+        this.seconds = 0
+        this.isPaused = false
+
+        document.getElementById('list').childNodes.forEach(item => item.style.fontWeight = 'normal')
+    },
+
+    everySecond: function () {
+        if (this.isPaused) {
+            return
+        }
+
+        const secondsLeft = this.secondsForExercise - this.seconds % this.secondsForExercise
+        const exercise = Math.floor(this.seconds / this.secondsForExercise) % this.exercisesInIteration
+        const iteration = Math.floor(this.seconds / (this.secondsForExercise * this.exercisesInIteration))
+
+        const items = document.getElementById('list').childNodes
+        const timer = document.getElementById('timer')
+
+        if (iteration == minutes()) {
+            timer.innerHTML = 'Done!'
+            return this.reset()
+        }
+
+        timer.innerHTML = secondsLeft
+
+        if (secondsLeft <= 5) {
+            this.beep()
+        }
+
+        items.forEach(item => item.style.fontWeight = 'normal')
+        items[exercise].style.fontWeight = 'bold'
+
+        this.seconds++
+    },
+
+    beep: function (length = 200) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext
+
+        const audioCtx = new AudioContext()
+        const frequency = 880
+        const oscillator = audioCtx.createOscillator()
+
+        oscillator.connect(audioCtx.destination)
+        oscillator.type = 'sine'
+        oscillator.start()
+
+        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime)
+
+        setTimeout(() => oscillator.stop(), length)
+    }
+}
+
+workout.regenerate()
+</script>
+
