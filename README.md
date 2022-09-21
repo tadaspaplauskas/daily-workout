@@ -11,3 +11,7 @@ I started working on it on a long train ride just to occupy myself.
 ## Contributing
 
 Suggestions for new exercises are welcomed, please submit a PR or open an issue if you don't know how.
+
+## License
+
+This package is released under the MIT License. See LICENSE for details.
