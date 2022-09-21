@@ -1,6 +1,6 @@
 # Daily Workout
 
-A simple workout generator for when you're travelling, have little time, or just want something different to do.
+A simple workout generator for when you're travelling, have little time, or just wanna try something different.
 
 Workouts are structured in circuits of lower body/push/pull/core exercises for 5 to 30 minutes. Do as many repetitions as you can for each exercise before moving on.
 
